@@ -1,10 +1,9 @@
-package com.example.managerapp.service.impl;
+package com.example.catalogueservice.service.impl;
 
-import com.example.managerapp.entity.Product;
-import com.example.managerapp.repository.ProductRepository;
-import com.example.managerapp.service.ProductService;
+import com.example.catalogueservice.entity.Product;
+import com.example.catalogueservice.repository.ProductRepository;
+import com.example.catalogueservice.service.ProductService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
