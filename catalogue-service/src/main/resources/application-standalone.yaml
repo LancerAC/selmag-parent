@@ -3,13 +3,19 @@ spring:
     url: jdbc:postgresql://localhost:5432/catalogue
     username: catalogue
     password: catalogue
-    driver-class-name: org.postgresql.Driver
   flyway:
     schemas:
       - public
       - catalogue
   jpa:
-    hibernate:
-      ddl-auto: none
+    show-sql: true
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8082/realms/selmag
 server:
   port: 8081
+logging:
+  level:
+    sql: info
