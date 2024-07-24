@@ -1,2 +1,15 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/catalogue
+    username: catalogue
+    password: catalogue
+    driver-class-name: org.postgresql.Driver
+  flyway:
+    schemas:
+      - public
+      - catalogue
+  jpa:
+    hibernate:
+      ddl-auto: none
 server:
   port: 8081
