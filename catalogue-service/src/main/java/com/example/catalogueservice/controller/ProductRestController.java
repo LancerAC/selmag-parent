@@ -27,7 +27,7 @@ public class ProductRestController {
 
     @ModelAttribute("product")
     public Product getProduct(@PathVariable("productId") int productId) {
-        return this.productService.findProductById(productId)
+        return this.productService.findProduct(productId)
                 .orElseThrow(() -> new NoSuchElementException("catalogue.errors.product.not_found"));
     }
 
