@@ -1,18 +1,17 @@
 package com.example.catalogueservice.repository;
 
 import com.example.catalogueservice.entity.Product;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
-public interface ProductRepository /*extends JpaRepository<Product, Integer>*/ {
-    Optional<Product> findById(Integer id);
+public interface ProductRepository extends JpaRepository<Product, Integer> {
 
-    Product save(Product product);
-
-    void deleteById(Integer id);
-
-    List<Product> findAll();
+    @Query(value = "select p from Product p where p.title ilike :filter")
+    List<Product> findAllByTitleLikeIgnoreCase(
+            @Param("filter") String filter);
 }
