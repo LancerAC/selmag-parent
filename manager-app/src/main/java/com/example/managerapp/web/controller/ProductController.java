@@ -43,11 +43,13 @@ public class ProductController {
     @PostMapping("edit")
     public String updateProduct(@ModelAttribute(name = "product", binding = false) Product product,
                                 UpdateProductPayload payload,
-                                Model model) {
+                                Model model,
+                                HttpServletResponse response) {
         try {
             this.productsRestClient.updateProduct(product.id(), payload.title(), payload.details());
             return "redirect:/catalogue/products/%d".formatted(product.id());
         } catch (BadRequestException exception) {
+            response.setStatus(HttpStatus.BAD_REQUEST.value());
             model.addAttribute("payload", payload);
             model.addAttribute("errors", exception.getErrors());
             return "catalogue/products/edit";
@@ -66,7 +68,7 @@ public class ProductController {
         response.setStatus(HttpStatus.NOT_FOUND.value());
         model.addAttribute("error",
                 this.messageSource.getMessage(exception.getMessage(), new Object[0],
-                        exception.getMessage(), locale));
+                        exception.getMessage(), Locale.forLanguageTag(String.valueOf(locale))));
         return "errors/404";
     }
 }
