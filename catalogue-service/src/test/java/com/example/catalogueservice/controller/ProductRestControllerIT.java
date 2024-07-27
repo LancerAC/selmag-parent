@@ -1,10 +1,13 @@
 package com.example.catalogueservice.controller;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -12,12 +15,18 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Locale;
 
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.jwt;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@ExtendWith(RestDocumentationExtension.class)
 @Transactional
+@AutoConfigureRestDocs
 @SpringBootTest
 @AutoConfigureMockMvc
 class ProductRestControllerIT {
@@ -45,7 +54,14 @@ class ProductRestControllerIT {
                                     "title": "Товар №1",
                                     "details": "Описание товара №1"
                                 }""")
-                );
+                )
+                .andDo(document("catalogue/products/find_all",
+                        preprocessResponse(prettyPrint()),
+                        responseFields(
+                                fieldWithPath("id").description("Идентификатор товара").type(int.class),
+                                fieldWithPath("title").description("Название товара").type(String.class),
+                                fieldWithPath("details").description("Описание товара").type(String.class)
+                        )));
     }
 
     @Test
